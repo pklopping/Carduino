@@ -67,7 +67,6 @@ char* formattedTime(char *time) {
 	char *timeCharArray = "00:00";
 	uint8_t hour = 0;
 	uint8_t minute = 0;
-	uint8_t second = 0;
 	hour = hour + (10 * (time[0]-'0'));
 	hour = hour + (time[1]-'0');
 	hour = hour + TIMEZONE;
@@ -76,11 +75,15 @@ char* formattedTime(char *time) {
 	}
 	minute = minute + (10 * (time[2]-'0'));
 	minute = minute + (time[3]-'0');
+  if (hour < 10) {
+    timeString += '0';
+  }
 	timeString += String(hour);
 	timeString += ":";
+  if (minute < 10) {
+    timeString += '0';
+  }
 	timeString += String(minute);
-	timeString += ":";
-	timeString += String(second);
 	//convert back to char array
 	timeString.toCharArray(timeCharArray,6);
 	return timeCharArray;

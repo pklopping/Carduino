@@ -136,21 +136,26 @@ void updateLCD() {
   // lcd.print("----------------");
   lcd.clear();
 
+  // ----- LINE 1 -----
+
   // Display Fix or not
-  lcd.setCursor(13,0);
-  if (fix) {
-    lcd.print("FIX");
+  if (!fix) {
+    lcd.setCursor(0,0);
+    lcd.print(" Acquiring  Lock");
   } else {
-    lcd.print("ACQ");
+    //Display MPH
+    
   }
+  // ----- LINE 2 -----
+
   //Display Time
   lcd.setCursor(5,1);
   lcd.print(formattedTime(currTime));
-  //Display MPH
-
   //Display Temp
   lcd.setCursor(13,1);
   lcd.print(round(currTemp));
+
+
 }
 
 /*

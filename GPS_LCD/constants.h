@@ -18,6 +18,9 @@ uint8_t i; //this isn't really a constant... shame on me
 #define LOG_GSV 0 // GSV-GNSS Satellites in View, message 103,03
 #define LOG_VTG 0 // VTG-Course Over Ground and Ground Speed, message 103,05
 
+// Set the GPSRATE to the baud rate of the GPS module. Mine is 4800
+#define GPSRATE 4800
+
 // #define GPS_TX_PIN 2
 // #define GPS_RX_PIN 3
 #define GPS_TX_PIN 50
@@ -25,3 +28,6 @@ uint8_t i; //this isn't really a constant... shame on me
 
 // Set the timezone
 #define TIMEZONE -6
+
+//Temp Sensor Bus
+#define ONE_WIRE_BUS 24

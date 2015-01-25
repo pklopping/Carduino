@@ -64,7 +64,7 @@ char* substr(char* arr, int begin, int len)
 
 char* formattedTime(char *time) {
 	String timeString = "";
-	char *timeCharArray = "00:00:00";
+	char *timeCharArray = "00:00";
 	uint8_t hour = 0;
 	uint8_t minute = 0;
 	uint8_t second = 0;
@@ -76,14 +76,12 @@ char* formattedTime(char *time) {
 	}
 	minute = minute + (10 * (time[2]-'0'));
 	minute = minute + (time[3]-'0');
-	second = second + (10* (time[4]-'0'));
-	second = second + (time[5]-'0');
 	timeString += String(hour);
 	timeString += ":";
 	timeString += String(minute);
 	timeString += ":";
 	timeString += String(second);
 	//convert back to char array
-	timeString.toCharArray(timeCharArray,9);
+	timeString.toCharArray(timeCharArray,6);
 	return timeCharArray;
 }

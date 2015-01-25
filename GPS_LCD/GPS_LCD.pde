@@ -1,20 +1,35 @@
+//Needed hacks to the arduino library
+/*
+  define MEGA_SOFT_SPI as 1 (originally 0) in Sd2Card.h
+*/
+
 #include <SD.h>
+#include <math.h>
 #include <avr/sleep.h>
 #include "constants.h"
 #include "GPSconfig.h"
 #include "helpers.h"
-#include <LiquidCrystal.h>
 #include <SoftwareSerial.h>
+//Other Libraries
 #include <SimpleTimer.h>
+//Temp Sensor Stuff
+#include <OneWire.h>
+#include <DallasTemperature.h>
+//LCD stuff
+#include <LiquidCrystal.h>
+
 
 SoftwareSerial gpsSerial =  SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
-// Set the GPSRATE to the baud rate of the GPS module. Mine is 4800
-#define GPSRATE 4800
+
+// Set up the Temp Sensor
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
 
 
 #define BUFFSIZE 90
 char buffer[BUFFSIZE];
 char *currTime; //current timestring from the GPS hhmmss.ddd
+float currTemp;
 uint8_t bufferidx = 0;
 bool fix = false; // current fix data
 bool gotGPRMC;    //true if current data is a GPRMC strinng
@@ -89,11 +104,25 @@ void setup() {
 
   //Setup time for updating the LCD
   timer.setInterval(1000,updateLCD);
+  timer.setInterval(2000,getTemperature);
+  //Temp Sensor Stuff
+  sensors.begin();
 }
 
 void loop() {
   readGPS();
   timer.run();
+}
+
+void getTemperature(){
+  Serial.print(" Requesting temperatures...");
+  sensors.requestTemperatures(); // Send the command to get temperatures
+  Serial.println("DONE");
+
+  Serial.print("Temperature for Device 1 is: ");
+  currTemp = sensors.getTempCByIndex(0);
+  Serial.print(currTemp); //index 0 assumes only one temp sesnor on bus
+  Serial.print('\n');
 }
 
 /*
@@ -115,11 +144,13 @@ void updateLCD() {
     lcd.print("ACQ");
   }
   //Display Time
-  lcd.setCursor(4,1);
+  lcd.setCursor(5,1);
   lcd.print(formattedTime(currTime));
   //Display MPH
 
   //Display Temp
+  lcd.setCursor(13,1);
+  lcd.print(round(currTemp));
 }
 
 /*

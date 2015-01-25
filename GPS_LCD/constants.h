@@ -3,7 +3,7 @@
 #define led1Pin 5
 #define led2Pin 6
 #define chipSelect 10
-uint8_t i;
+uint8_t i; //this isn't really a constant... shame on me
 
 // power saving modes
 #define SLEEPDELAY 0    /* power-down time in seconds. Max 65535. Ignored if TURNOFFGPS == 0 */

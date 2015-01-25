@@ -5,6 +5,7 @@
 #include "helpers.h"
 #include <LiquidCrystal.h>
 #include <SoftwareSerial.h>
+#include <SimpleTimer.h>
 
 SoftwareSerial gpsSerial =  SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
 // Set the GPSRATE to the baud rate of the GPS module. Mine is 4800
@@ -21,6 +22,8 @@ File logfile;
 //LCD 
 LiquidCrystal lcd(42, 41, 40, 35, 34, 33, 32);
 int backLight = 49;    // pin 13 will control the backlight
+
+SimpleTimer timer;
 
 void setup() {
   WDTCSR |= (1 << WDCE) | (1 << WDE);
@@ -83,12 +86,43 @@ void setup() {
   lcd.setCursor(0,1);           // set cursor to column 0, row 1
   lcd.print(" Acquiring Lock");
 
+  //Setup time for updating the LCD
+  timer.setInterval(1000,updateLCD);
 }
 
 void loop() {
   readGPS();
+  timer.run();
 }
 
+/*
+  This function updates the data on the LCD
+*/
+void updateLCD() {
+  //Show a welcome message on the LCD
+  // lcd.setCursor(0,0);
+  // lcd.print("----------------");
+  // lcd.setCursor(0,1);
+  // lcd.print("----------------");
+  lcd.clear();
+
+  // Display Fix or not
+  lcd.setCursor(13,0);
+  if (fix) {
+    lcd.print("FIX");
+  } else {
+    lcd.print("ACQ");
+  }
+  //Display Time
+
+  //Display MPH
+
+  //Display Temp
+}
+
+/*
+  This function reads from teh GPS unit and writes to the SD card.
+*/
 void readGPS() {
   //Serial.println(Serial.available(), DEC);
   char c;

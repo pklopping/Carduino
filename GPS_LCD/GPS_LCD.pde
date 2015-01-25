@@ -157,6 +157,16 @@ void updateLCD() {
     lcd.setCursor(4,0);
     lcd.print(currSpeed);
     lcd.print("mph");
+
+    //Display Heading
+    lcd.setCursor(13,0);
+    if (currHeading<100) {
+      lcd.print("0");
+      if (currHeading < 10) {
+        lcd.print("0");
+      }
+    }
+    lcd.print(currHeading);
   }
   // ----- LINE 2 -----
 
@@ -236,7 +246,10 @@ void readGPS() {
       }
     }
 
-    currSpeed = getSpeed(buffer);
+    if (fix) {
+      currSpeed = getSpeed(buffer);
+      currHeading = getHeading(buffer);
+    }
 
     if (LOG_RMC_FIXONLY) {
       if (!fix) {

@@ -10,7 +10,7 @@
 // enable (LCD pin 6) to Arduino pin 10
 // LCD pin 15 to Arduino pin 13
 // LCD pins d4, d5, d6, d7 to Arduino pins 5, 4, 3, 2
-LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
+LiquidCrystal lcd(42, 41, 40, 35, 34, 33, 32);
 
 int backLight = 13;    // pin 13 will control the backlight
 

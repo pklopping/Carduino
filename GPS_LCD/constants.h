@@ -22,3 +22,6 @@ uint8_t i; //this isn't really a constant... shame on me
 // #define GPS_RX_PIN 3
 #define GPS_TX_PIN 50
 #define GPS_RX_PIN 51
+
+// Set the timezone
+#define TIMEZONE -6

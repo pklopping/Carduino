@@ -14,6 +14,7 @@ SoftwareSerial gpsSerial =  SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
 
 #define BUFFSIZE 90
 char buffer[BUFFSIZE];
+char *currTime; //current timestring from the GPS hhmmss.ddd
 uint8_t bufferidx = 0;
 bool fix = false; // current fix data
 bool gotGPRMC;    //true if current data is a GPRMC strinng
@@ -84,7 +85,7 @@ void setup() {
   lcd.setCursor(0,0);           // set cursor to column 0, row 0 (the first row)
   lcd.print("    Welcome");    // change this text to whatever you like. keep it clean.
   lcd.setCursor(0,1);           // set cursor to column 0, row 1
-  lcd.print(" Acquiring Lock");
+  lcd.print("Starting System");
 
   //Setup time for updating the LCD
   timer.setInterval(1000,updateLCD);
@@ -114,7 +115,8 @@ void updateLCD() {
     lcd.print("ACQ");
   }
   //Display Time
-
+  lcd.setCursor(4,1);
+  lcd.print(formattedTime(currTime));
   //Display MPH
 
   //Display Temp
@@ -173,7 +175,8 @@ void readGPS() {
     if (gotGPRMC) {
       // find out if we got a fix
       char *p = buffer;
-      p = strchr(p, ',')+1;
+      p = strchr(p, ',')+1; //Should have current time?
+      currTime = substr(p,0,6);
       p = strchr(p, ',')+1;       // skip to 3rd item
       
       if (p[0] == 'V') {

@@ -52,3 +52,38 @@ SIGNAL(WDT_vect) {
   WDTCSR |= (1 << WDCE) | (1 << WDE);
   WDTCSR = 0;
 }
+
+char* substr(char* arr, int begin, int len)
+{
+    char* res = new char[len];
+    for (int i = 0; i < len; i++)
+        res[i] = *(arr + begin + i);
+    res[len] = 0;
+    return res;
+}
+
+char* formattedTime(char *time) {
+	String timeString = "";
+	char *timeCharArray = "00:00:00";
+	uint8_t hour = 0;
+	uint8_t minute = 0;
+	uint8_t second = 0;
+	hour = hour + (10 * (time[0]-'0'));
+	hour = hour + (time[1]-'0');
+	hour = hour + TIMEZONE;
+	if (hour < 0) {
+		hour = hour+24;
+	}
+	minute = minute + (10 * (time[2]-'0'));
+	minute = minute + (time[3]-'0');
+	second = second + (10* (time[4]-'0'));
+	second = second + (time[5]-'0');
+	timeString += String(hour);
+	timeString += ":";
+	timeString += String(minute);
+	timeString += ":";
+	timeString += String(second);
+	//convert back to char array
+	timeString.toCharArray(timeCharArray,9);
+	return timeCharArray;
+}

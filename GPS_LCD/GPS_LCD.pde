@@ -29,6 +29,8 @@ DallasTemperature sensors(&oneWire);
 #define BUFFSIZE 90
 char buffer[BUFFSIZE];
 char *currTime; //current timestring from the GPS hhmmss.ddd
+float currSpeed; //current speed from GPS in knots
+float currHeading; //current heading from GPS
 float currTemp;
 uint8_t bufferidx = 0;
 bool fix = false; // current fix data
@@ -87,6 +89,14 @@ void setup() {
   gpsSerial.print(SERIAL_SET);
   delay(250);
 
+  //Whoops, looks like I need to tell it to turn off this other junk
+  gpsSerial.print(DDM_OFF);
+  gpsSerial.print(GGA_OFF);
+  gpsSerial.print(GLL_OFF);
+  gpsSerial.print(GSA_OFF);
+  gpsSerial.print(GSV_OFF);
+  gpsSerial.print(VTG_OFF);
+  gpsSerial.print(WAAS_OFF);
   gpsSerial.print(RMC_ON);
   delay(250);
 
@@ -104,7 +114,7 @@ void setup() {
 
   //Setup time for updating the LCD
   timer.setInterval(1000,updateLCD);
-  timer.setInterval(2000,getTemperature);
+  timer.setInterval(5000,getTemperature);
   //Temp Sensor Stuff
   sensors.begin();
 }
@@ -141,10 +151,12 @@ void updateLCD() {
   // Display Fix or not
   if (!fix) {
     lcd.setCursor(0,0);
-    lcd.print(" Acquiring  Lock");
+    lcd.print(" Acquiring Lock");
   } else {
     //Display MPH
-    
+    lcd.setCursor(4,0);
+    lcd.print(currSpeed);
+    lcd.print("mph");
   }
   // ----- LINE 2 -----
 
@@ -223,6 +235,9 @@ void readGPS() {
         fix = true;
       }
     }
+
+    currSpeed = getSpeed(buffer);
+
     if (LOG_RMC_FIXONLY) {
       if (!fix) {
         Serial.print('_');

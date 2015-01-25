@@ -88,3 +88,33 @@ char* formattedTime(char *time) {
 	timeString.toCharArray(timeCharArray,6);
 	return timeCharArray;
 }
+
+char* parseGPSString(int targetIndex, char *inputString) {
+  //Sometimes I hate strings in C, so here's a workaround!
+  String inputCopy = String(inputString);
+  int currentIndex = 0;
+  int strIndex = 0;
+  int delimIndex = 0;
+  char ret[100];
+  while (inputCopy.indexOf(',') != -1) {
+    delimIndex = inputCopy.indexOf(',');
+    String field = inputCopy.substring(0,delimIndex);
+    // Serial.println(field);
+    if (currentIndex == targetIndex) {
+      field.toCharArray(ret,100);
+      return ret;
+    }
+    inputCopy = inputCopy.substring(delimIndex+1);
+    currentIndex = currentIndex + 1;
+  }
+  return "ERR";
+}
+
+float getSpeed(char *gpsString) {
+  float knots = atof(parseGPSString(7,gpsString));
+  return knots*1.15077;
+}
+
+float getHeading(char *gpsString) {
+  return atof(parseGPSString(8,gpsString));
+}

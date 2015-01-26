@@ -29,6 +29,7 @@ DallasTemperature sensors(&oneWire);
 #define BUFFSIZE 90
 char buffer[BUFFSIZE];
 char *currTime; //current timestring from the GPS hhmmss.ddd
+bool speedIsBlank;
 float currSpeed; //current speed from GPS in knots
 float currHeading; //current heading from GPS
 float currTemp;
@@ -130,7 +131,7 @@ void getTemperature(){
   Serial.println("DONE");
 
   Serial.print("Temperature for Device 1 is: ");
-  currTemp = sensors.getTempCByIndex(0);
+  currTemp = sensors.getTempFByIndex(0);
   Serial.print(currTemp); //index 0 assumes only one temp sesnor on bus
   Serial.print('\n');
 }
@@ -154,19 +155,24 @@ void updateLCD() {
     lcd.print(" Acquiring Lock");
   } else {
     //Display MPH
-    lcd.setCursor(4,0);
-    lcd.print(currSpeed);
-    lcd.print("mph");
+    if (speedIsBlank) {
+      lcd.setCursor(0,0);
+      lcd.print("Acquiring Speed");
+    } else {
+      lcd.setCursor(4,0);
+      lcd.print(currSpeed);
+      lcd.print("mph");
 
-    //Display Heading
-    lcd.setCursor(13,0);
-    if (currHeading<100) {
-      lcd.print("0");
-      if (currHeading < 10) {
+      //Display Heading
+      lcd.setCursor(13,0);
+      if (currHeading<100) {
         lcd.print("0");
+        if (currHeading < 10) {
+          lcd.print("0");
+        }
       }
+      lcd.print(currHeading);
     }
-    lcd.print(currHeading);
   }
   // ----- LINE 2 -----
 
@@ -175,6 +181,12 @@ void updateLCD() {
   lcd.print(formattedTime(currTime));
   //Display Temp
   lcd.setCursor(13,1);
+  if (currTemp<100) {
+    lcd.print("0");
+    if (currTemp<10){
+      lcd.print("0");
+    }
+  }
   lcd.print(round(currTemp));
 
 
@@ -247,6 +259,7 @@ void readGPS() {
     }
 
     if (fix) {
+      speedIsBlank = checkForBlankSpeed(buffer);
       currSpeed = getSpeed(buffer);
       currHeading = getHeading(buffer);
     }

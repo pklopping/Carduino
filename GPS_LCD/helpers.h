@@ -115,6 +115,11 @@ float getSpeed(char *gpsString) {
   return knots*1.15077;
 }
 
+bool checkForBlankSpeed(char *gpsString) {
+  char *speed = parseGPSString(7,gpsString);
+  return (speed == "");
+}
+
 float getHeading(char *gpsString) {
   return atof(parseGPSString(8,gpsString));
 }

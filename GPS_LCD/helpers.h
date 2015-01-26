@@ -65,8 +65,8 @@ char* substr(char* arr, int begin, int len)
 char* formattedTime(char *time) {
 	String timeString = "";
 	char *timeCharArray = "00:00";
-	uint8_t hour = 0;
-	uint8_t minute = 0;
+	int hour = 0;
+	int minute = 0;
 	hour = hour + (10 * (time[0]-'0'));
 	hour = hour + (time[1]-'0');
 	hour = hour + TIMEZONE;

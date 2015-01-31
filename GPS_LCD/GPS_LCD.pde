@@ -32,7 +32,7 @@ SimpleTimer timer;
 void setup() {
   Serial.begin(9600);
   Serial.println("\r\nGPSlogger");
-
+  GPS::GPS();
   // make sure that the default chip select pin is set to
   // output, even if you don't use it:
   pinMode(53, OUTPUT);

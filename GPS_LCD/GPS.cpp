@@ -202,7 +202,7 @@ void GPS::readGPS() {
 }
 
 // read a Hex value and return the decimal equivalent
-uint8_t parseHex(char c) {
+uint8_t GPS::parseHex(char c) {
   if (c < '0')
     return 0;
   if (c <= '9')
@@ -213,7 +213,7 @@ uint8_t parseHex(char c) {
     return (c - 'A')+10;
 }
 
-char* parseGPSString(int targetIndex, char *inputString) {
+char* GPS::parseGPSString(int targetIndex, char *inputString) {
   //Sometimes I hate strings in C, so here's a workaround!
   String inputCopy = String(inputString);
   int currentIndex = 0;
@@ -234,7 +234,7 @@ char* parseGPSString(int targetIndex, char *inputString) {
   return "ERR";
 }
 
-void sleep_sec(uint16_t x) {
+void GPS::sleep_sec(uint16_t x) {
   while (x--) {
      // set the WDT to wake us up!
     WDTCSR |= (1 << WDCE) | (1 << WDE); // enable watchdog & enable changing it
@@ -247,7 +247,7 @@ void sleep_sec(uint16_t x) {
   }
 }
 
-char* substr(char* arr, int begin, int len)
+char* GPS::substr(char* arr, int begin, int len)
 {
     char* res = new char[len];
     for (int i = 0; i < len; i++)
@@ -256,7 +256,7 @@ char* substr(char* arr, int begin, int len)
     return res;
 }
 
-void checkForBlankSpeed(char *gpsString) {
+void GPS::checkForBlankSpeed(char *gpsString) {
   char *speed = parseGPSString(7,gpsString);
   speedIsBlank = (speed == "");
 }

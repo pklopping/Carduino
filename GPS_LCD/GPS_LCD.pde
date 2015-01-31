@@ -109,18 +109,18 @@ void updateLCD() {
       lcd.print("Acquiring Speed");
     } else {
       lcd.setCursor(4,0);
-      lcd.print(currSpeed);
+      lcd.print(GPS::currSpeed);
       lcd.print("mph");
 
       //Display Heading
       lcd.setCursor(13,0);
-      if (currHeading<100) {
+      if (GPS::currHeading<100) {
         lcd.print("0");
-        if (currHeading < 10) {
+        if (GPS::currHeading < 10) {
           lcd.print("0");
         }
       }
-      lcd.print(currHeading);
+      lcd.print(GPS::currHeading);
     }
   }
   // ----- LINE 2 -----
@@ -137,4 +137,4 @@ void updateLCD() {
     }
   }
   lcd.print(round(currTemp));
-
+}

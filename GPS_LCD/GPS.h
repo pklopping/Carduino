@@ -31,7 +31,7 @@ private:
 	static uint8_t parseHex(char);
 	static void setSpeed(char *);
 	static void setHeading(char *);
-	static void checkForBlankSpeed();
+	static void checkForBlankSpeed(char*);
 	static char* parseGPSString(int, char*);
 	static void sleep_sec(uint16_t);
 	static char* substr(char*, int, int);

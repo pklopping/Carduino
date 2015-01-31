@@ -4,8 +4,12 @@
 #include <String.h>
 #include <avr/sleep.h>
 
-bool GPS::hasLock = false;
 uint8_t GPS::bufferidx = 0;
+bool GPS::hasLock = false; // current fix state
+char *GPS::currTime = "00:00"; //current timestring from the GPS hhmmss.ddd
+float GPS::currSpeed = 0.0; //current speed from GPS in knots
+float GPS::currHeading = 0.0; //current heading from GPS
+bool GPS::speedIsBlank = true;
 
 GPS::GPS() {
 	//do init

@@ -23,6 +23,7 @@ public:
 	static void readGPS();
 
 private:
+	static uint8_t i;
 	static char buffer[BUFFSIZE];
 	static uint8_t bufferidx;
 	static bool gotGPRMC;    //true if current data is a GPRMC strinng

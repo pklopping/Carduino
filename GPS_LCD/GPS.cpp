@@ -5,15 +5,19 @@
 #include <avr/sleep.h>
 
 uint8_t GPS::bufferidx = 0;
+char GPS::buffer[BUFFSIZE];
 bool GPS::hasLock = false; // current fix state
 char *GPS::currTime = "00:00"; //current timestring from the GPS hhmmss.ddd
 float GPS::currSpeed = 0.0; //current speed from GPS in knots
 float GPS::currHeading = 0.0; //current heading from GPS
 bool GPS::speedIsBlank = true;
+File GPS::logfile;
+bool GPS::gotGPRMC;
+uint8_t GPS::i = 0;
+SoftwareSerial GPS::gpsSerial = SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
 
 GPS::GPS() {
 	//do init
-	gpsSerial =  SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
 	WDTCSR |= (1 << WDCE) | (1 << WDE);
 	WDTCSR = 0;
 	pinMode(gpsHasLockPin, OUTPUT);

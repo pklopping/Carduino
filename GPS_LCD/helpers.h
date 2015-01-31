@@ -10,7 +10,8 @@ void error(uint8_t errno) {
   }
   */
   while(1) {
-    for (i=0; i<errno; i++) {
+    int i = 0;
+    for (; i<errno; i++) {
       digitalWrite(gpsHasLockPin, HIGH);
       digitalWrite(gpsWritingToSDPin, HIGH);
       delay(100);

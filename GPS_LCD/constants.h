@@ -1,7 +1,10 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
 // Set the pins used for the GPS shield
-#define powerPin 4
-#define led1Pin 5
-#define led2Pin 6
+#define gpsChipPowerPin 4
+#define gpsHasLockPin 5
+#define gpsWritingToSDPin 6
 #define chipSelect 10
 uint8_t i; //this isn't really a constant... shame on me
 
@@ -31,3 +34,5 @@ uint8_t i; //this isn't really a constant... shame on me
 
 //Temp Sensor Bus
 #define ONE_WIRE_BUS 24
+
+#endif

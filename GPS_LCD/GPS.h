@@ -14,6 +14,7 @@ public:
 	static char *currTime; //current timestring from the GPS hhmmss.ddd
 	static float currSpeed; //current speed from GPS in knots
 	static float currHeading; //current heading from GPS
+	static bool speedIsBlank;
 
 	GPS();
 	static int setupSD();
@@ -30,6 +31,7 @@ private:
 	static uint8_t parseHex(char);
 	static void setSpeed(char *);
 	static void setHeading(char *);
+	static void checkForBlankSpeed();
 	static char* parseGPSString(int, char*);
 	static void sleep_sec(uint16_t);
 	static char* substr(char*, int, int);

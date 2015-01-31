@@ -140,6 +140,7 @@ void GPS::readGPS() {
 		}
 
 		if (hasLock) {
+      checkForBlankSpeed(buffer);
 			setSpeed(buffer);
 			setHeading(buffer);
 		}
@@ -253,4 +254,9 @@ char* substr(char* arr, int begin, int len)
         res[i] = *(arr + begin + i);
     res[len] = 0;
     return res;
+}
+
+void checkForBlankSpeed(char *gpsString) {
+  char *speed = parseGPSString(7,gpsString);
+  speedIsBlank = (speed == "");
 }

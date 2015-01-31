@@ -250,8 +250,8 @@ void GPS::sleep_sec(uint16_t x) {
 char* GPS::substr(char* arr, int begin, int len)
 {
     char* res = new char[len];
-    for (int i = 0; i < len; i++)
-        res[i] = *(arr + begin + i);
+    for (int j = 0; j < len; j++)
+        res[j] = *(arr + begin + j);
     res[len] = 0;
     return res;
 }

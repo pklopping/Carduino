@@ -21,6 +21,7 @@ GPS::GPS() {
 	WDTCSR |= (1 << WDCE) | (1 << WDE);
 	WDTCSR = 0;
 	gpsSerial = SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
+	configureGpsSerial();
 	pinMode(gpsHasLockPin, OUTPUT);
 	pinMode(gpsWritingToSDPin, OUTPUT);
 	pinMode(gpsChipPowerPin, OUTPUT);
@@ -92,7 +93,7 @@ void GPS::readGPS() {
 
 	// read one 'line'
 	if (!gpsSerial.available()) {
-		Serial.print("GPS Not Available\n");
+		// Serial.print("GPS Not Available\n");
 		return;
 	}
 	c = gpsSerial.read();

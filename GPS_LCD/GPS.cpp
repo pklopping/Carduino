@@ -20,7 +20,6 @@ GPS::GPS() {
 	//do init
 	WDTCSR |= (1 << WDCE) | (1 << WDE);
 	WDTCSR = 0;
-	gpsSerial = SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
 	configureGpsSerial();
 	pinMode(gpsHasLockPin, OUTPUT);
 	pinMode(gpsWritingToSDPin, OUTPUT);

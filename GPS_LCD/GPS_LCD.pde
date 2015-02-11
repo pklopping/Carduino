@@ -31,15 +31,19 @@ SimpleTimer timer;
 void setup() {
   Serial.begin(115200); //9600 is so ordinary
   Serial.println("\r\nGPSlogger");
+
+  //INit the GPS class
   GPS::GPS();
+
   // make sure that the default chip select pin is set to
   // output, even if you don't use it:
   pinMode(53, OUTPUT);
+  digitalWrite(53,HIGH);
+
   pinMode(SWITCH_UP, INPUT);
   pinMode(SWITCH_DOWN, INPUT);
   pinMode(RED_BUTTON, INPUT);
   pinMode(BLACK_BUTTON, INPUT);
-  digitalWrite(53,HIGH);
 
   int err = 0;
   
@@ -63,7 +67,7 @@ void setup() {
   lcd.setCursor(0,1);           // set cursor to column 0, row 1
   lcd.print("Starting System");
 
-  //Setup time for updating the LCD
+  //Setup timers
   timer.setInterval(1000,updateLCD);
   timer.setInterval(5000,updateLights);
   timer.setInterval(5000,getTemperature);

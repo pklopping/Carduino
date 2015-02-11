@@ -154,17 +154,13 @@ void updateLCD() {
       lcd.print("Acquiring Speed");
     } else {
       lcd.setCursor(4,0);
-      lcd.print(GPS::currSpeed);
+      padLCDNumber(GPS::currSpeed, 2);
+      lcd.print((int)GPS::currSpeed);
       lcd.print("mph");
 
       //Display Heading
       lcd.setCursor(13,0);
-      if (GPS::currHeading<100) {
-        lcd.print("0");
-        if (GPS::currHeading < 10) {
-          lcd.print("0");
-        }
-      }
+      padLCDNumber(GPS::currHeading, 2);
       lcd.print(GPS::currHeading);
     }
   }
@@ -175,11 +171,22 @@ void updateLCD() {
   lcd.print(formattedTime(GPS::currTime));
   //Display Temp
   lcd.setCursor(13,1);
-  if (currTemp<100) {
-    lcd.print("0");
-    if (currTemp<10){
-      lcd.print("0");
-    }
-  }
+  padLCDNumber(currTemp, 2);
   lcd.print(round(currTemp));
+}
+
+/*
+  This method will pad a number on the LCD 
+  leading_zeros is actually relative to a power of 10, 
+  so 2 leading zeros would yeild 00 if the number is less than 10
+  it's a litlte confusing, I know. I should put more thought into this variable name
+*/
+void padLCDNumber(float number, int8_t leading_zeros) {
+  if (leading_zeros < 0)
+    return;
+  while (leading_zeros > 0) {
+    if (number < pow(10, leading_zeros))
+      lcd.print("0");
+    leading_zeros--;
+  }
 }

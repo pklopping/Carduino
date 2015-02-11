@@ -99,7 +99,7 @@ void updateLights() {
       pinMode(GREEN_CHANNEL, OUTPUT);
       pinMode(BLUE_CHANNEL, OUTPUT);
       break;
-    case 2: //Remote
+    case -1: //Remote
       pinMode(RED_CHANNEL, INPUT);
       pinMode(GREEN_CHANNEL, INPUT);
       pinMode(BLUE_CHANNEL, INPUT);
@@ -177,6 +177,20 @@ void updateLCD() {
   lcd.setCursor(13,1);
   padLCDNumber(currTemp, 2);
   lcd.print(round(currTemp));
+
+  //Display Switch Status
+  lcd.setCursor(0,1);
+  switch (switchState) {
+    case 0:
+      lcd.print("OFF");
+      break;
+    case 1:
+      lcd.print("TMP");
+      break;
+    case -1:
+      lcd.print("RMT");
+      break;
+  }
 }
 
 /*

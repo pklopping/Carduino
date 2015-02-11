@@ -49,4 +49,8 @@
 #define HOT 80
 #define COLD 60
 
+#define DEBUG_LIGHTS false
+#define DEBUG_TEMPS false
+#define DEBUG_GPS false
+
 #endif

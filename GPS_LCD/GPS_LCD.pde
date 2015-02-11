@@ -29,7 +29,7 @@ int8_t switchState; // 0 is off, -1 is down, 1 is up
 SimpleTimer timer;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200); //9600 is so ordinary
   Serial.println("\r\nGPSlogger");
   GPS::GPS();
   // make sure that the default chip select pin is set to
@@ -118,14 +118,16 @@ void setLightColors() {
 }
 
 void getTemperature(){
-  Serial.print(" Requesting temperatures...");
+  if (DEBUG_TEMPS)
+    Serial.print(" Requesting temperatures...");
   sensors.requestTemperatures(); // Send the command to get temperatures
-  Serial.println("DONE");
-
-  Serial.print("Temperature for Device 1 is: ");
   currTemp = sensors.getTempFByIndex(0);
-  Serial.print(currTemp); //index 0 assumes only one temp sesnor on bus
-  Serial.print('\n');
+  if (DEBUG_TEMPS) {
+    Serial.println("DONE");
+    Serial.print("Temperature for Device 1 is: ");
+    Serial.print(currTemp); //index 0 assumes only one temp sesnor on bus
+    Serial.print('\n');
+  }
 }
 
 /*

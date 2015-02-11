@@ -29,7 +29,8 @@ GPS::GPS() {
 int GPS::setupSD() {
 	// see if the card is present and can be initialized:
 	if (!SD.begin(chipSelect)) {
-		Serial.println("Card init. failed!");
+		if (DEBUG_GPS)
+			Serial.println("Card init. failed!");
 		return(1);
 	}
 	return 0;
@@ -47,10 +48,16 @@ int GPS::createLog() {
 	}
 	logfile = SD.open(buffer, FILE_WRITE);
 	if( ! logfile ) {
-		Serial.print("Couldnt create "); Serial.println(buffer);
+		if (DEBUG_GPS) {
+			Serial.print("Couldnt create ");
+			Serial.println(buffer);
+		}
 		return(3);
 	}
-	Serial.print("Writing to "); Serial.println(buffer);
+	if (DEBUG_GPS) {
+		Serial.print("Writing to ");
+		Serial.println(buffer);
+	}
 	return 0;
 }
 
@@ -58,7 +65,8 @@ void GPS::configureGpsSerial() {
 	// connect to the GPS at the desired rate
 	gpsSerial.begin(GPSRATE);
 
-	Serial.println("Ready!");
+	if (DEBUG_GPS)
+		Serial.println("GPS Ready!");
 
 	gpsSerial.print(SERIAL_SET);
 	delay(250);
@@ -110,7 +118,8 @@ void GPS::readGPS() {
 
 		if (buffer[bufferidx-4] != '*') {
 			// no checksum?
-			Serial.print('*');
+			if (DEBUG_GPS)
+				Serial.print('*');
 			bufferidx = 0;
 			return;
 		}
@@ -124,7 +133,8 @@ void GPS::readGPS() {
 		}
 		if (sum != 0) {
 			//putstring_nl("Cxsum mismatch");
-			Serial.print('~');
+			if (DEBUG_GPS)
+				Serial.print('~');
 			bufferidx = 0;
 			return;
 		}
@@ -161,9 +171,10 @@ void GPS::readGPS() {
 			}
 		}
 		// rad. lets log it!
-
-		Serial.print(buffer);    //first, write it to the serial monitor
-		Serial.print('#');
+		if (DEBUG_GPS) {
+			Serial.print(buffer);    //first, write it to the serial monitor
+			Serial.print('#');
+		}
 		if (gotGPRMC)      //If we have a GPRMC string
 		{
 			// Bill Greiman - need to write bufferidx + 1 bytes to getCR/LF
@@ -204,7 +215,8 @@ void GPS::readGPS() {
 	}
 	bufferidx++;
 	if (bufferidx == BUFFSIZE-1) {
-		Serial.print('!');
+		if (DEBUG_GPS)
+			Serial.print('!');
 		bufferidx = 0;
 	}
 }

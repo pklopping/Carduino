@@ -23,7 +23,6 @@ DallasTemperature sensors(&oneWire);
 
 //LCD 
 LiquidCrystal lcd(42, 41, 40, 35, 34, 33, 32);
-int backLight = 49;    // pin 13 will control the backlight
 float currTemp;
 int8_t switchState; // 0 is off, -1 is down, 1 is up
 
@@ -55,8 +54,6 @@ void setup() {
   }
 
   //Configure the LCD
-  pinMode(backLight, OUTPUT);
-  digitalWrite(backLight, HIGH); // turn backlight on. Replace 'HIGH' with 'LOW' to turn it off.
   lcd.begin(16,2);              // columns, rows.  use 16,2 for a 16x2 LCD, etc.
 
   //Show a welcome message on the LCD

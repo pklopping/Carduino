@@ -73,12 +73,19 @@ void GPS::configureGpsSerial() {
 
 	//Whoops, looks like I need to tell it to turn off this other junk
 	gpsSerial.print(DDM_OFF);
+	delay(250);
 	gpsSerial.print(GGA_OFF);
+	delay(250);
 	gpsSerial.print(GLL_OFF);
+	delay(250);
 	gpsSerial.print(GSA_OFF);
+	delay(250);
 	gpsSerial.print(GSV_OFF);
+	delay(250);
 	gpsSerial.print(VTG_OFF);
+	delay(250);
 	gpsSerial.print(WAAS_OFF);
+	delay(250);
 	gpsSerial.print(RMC_ON);
 	delay(250);
 }

@@ -13,7 +13,6 @@ float GPS::currHeading = 0.0; //current heading from GPS
 bool GPS::speedIsBlank = true;
 File GPS::logfile;
 bool GPS::gotGPRMC;
-uint8_t GPS::i = 0;
 SoftwareSerial GPS::gpsSerial = SoftwareSerial(GPS_TX_PIN, GPS_RX_PIN);
 
 GPS::GPS() {
@@ -38,7 +37,7 @@ int GPS::setupSD() {
 
 int GPS::createLog() {
 	strcpy(buffer, "GPSLOG00.TXT");
-	for (i = 0; i < 100; i++) {
+	for (int8_t i = 0; i < 100; i++) {
 		buffer[6] = '0' + i/10;
 		buffer[7] = '0' + i%10;
 		// create if does not exist, do not open existing, write, sync after write
@@ -120,7 +119,7 @@ void GPS::readGPS() {
 		sum += parseHex(buffer[bufferidx-2]);
 
 		// check checksum
-		for (i=1; i < (bufferidx-4); i++) {
+		for (int i=1; i < (bufferidx-4); i++) {
 			sum ^= buffer[i];
 		}
 		if (sum != 0) {

@@ -240,19 +240,6 @@ char* GPS::parseGPSString(int targetIndex, char *inputString) {
   return "ERR";
 }
 
-void GPS::sleep_sec(uint16_t x) {
-  while (x--) {
-     // set the WDT to wake us up!
-    WDTCSR |= (1 << WDCE) | (1 << WDE); // enable watchdog & enable changing it
-    WDTCSR = (1<< WDE) | (1 <<WDP2) | (1 << WDP1);
-    WDTCSR |= (1<< WDIE);
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
- //   sleep_enable();
-    sleep_mode();
-//    sleep_disable();
-  }
-}
-
 char* GPS::substr(char* arr, int begin, int len)
 {
     char* res = new char[len];

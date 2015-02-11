@@ -21,11 +21,11 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
-
 //LCD 
 LiquidCrystal lcd(42, 41, 40, 35, 34, 33, 32);
 int backLight = 49;    // pin 13 will control the backlight
 float currTemp;
+int8_t switchState; // 0 is off, -1 is down, 1 is up
 
 SimpleTimer timer;
 
@@ -36,6 +36,10 @@ void setup() {
   // make sure that the default chip select pin is set to
   // output, even if you don't use it:
   pinMode(53, OUTPUT);
+  pinMode(SWITCH_UP, INPUT);
+  pinMode(SWITCH_DOWN, INPUT);
+  pinMode(RED_BUTTON, INPUT);
+  pinMode(BLACK_BUTTON, INPUT);
   digitalWrite(53,HIGH);
 
   int err = 0;
@@ -64,6 +68,7 @@ void setup() {
 
   //Setup time for updating the LCD
   timer.setInterval(1000,updateLCD);
+  timer.setInterval(5000,updateLights);
   timer.setInterval(5000,getTemperature);
   //Temp Sensor Stuff
   sensors.begin();
@@ -72,6 +77,47 @@ void setup() {
 void loop() {
   GPS::readGPS();
   timer.run();
+}
+
+void updateLights() {
+  //Check for change in state
+  bool up = digitalRead(SWITCH_UP);
+  bool down = digitalRead(SWITCH_DOWN);
+  if (up)
+    switchState = 1;
+  else if (down)
+    switchState = -1;
+  else
+    switchState = 0;
+
+  //Configure Pins
+  switch (switchState) {
+    case 0: //Off
+    case 1: //Temp
+      pinMode(RED_CHANNEL, OUTPUT);
+      pinMode(GREEN_CHANNEL, OUTPUT);
+      pinMode(BLUE_CHANNEL, OUTPUT);
+      break;
+    case 2: //Remote
+      pinMode(RED_CHANNEL, INPUT);
+      pinMode(GREEN_CHANNEL, INPUT);
+      pinMode(BLUE_CHANNEL, INPUT);
+      break;
+  }
+
+  //Update light colors if necessary
+  if (switchState == 1) {
+    setLightColors();
+  }
+}
+
+void setLightColors() {
+  int tempTemp = currTemp;
+  tempTemp = max(currTemp, COLD);
+  tempTemp = min(tempTemp, HOT);
+  uint8_t currentColor = map(tempTemp, COLD, HOT, 0, 255);
+  analogWrite(RED_CHANNEL, currentColor);
+  analogWrite(BLUE_CHANNEL, 255-currentColor);
 }
 
 void getTemperature(){

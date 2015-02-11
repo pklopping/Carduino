@@ -34,4 +34,19 @@
 //Temp Sensor Bus
 #define ONE_WIRE_BUS 24
 
+//External Controls
+#define SWITCH_UP 26 //Up means temp controlled
+#define SWITCH_DOWN 27 //Down means remote controlled
+#define RED_BUTTON 28
+#define BLACK_BUTTON 29
+
+//Lighting Controls
+#define RED_CHANNEL 44
+#define GREEN_CHANNEL 45
+#define BLUE_CHANNEL 46
+
+//Temperature
+#define HOT 80
+#define COLD 60
+
 #endif

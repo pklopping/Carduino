@@ -195,20 +195,6 @@ void GPS::readGPS() {
 
 			bufferidx = 0;    //reset buffer pointer
 
-			if (hasLock) {  //(don't sleep if there's no fix)
-        
-				if ((TURNOFFGPS) && (SLEEPDELAY)) {      // turn off GPS module? 
-        
-					digitalWrite(gpsChipPowerPin, HIGH);  //turn off GPS
-
-					delay(100);  //wait for serial monitor write to finish
-					sleep_sec(SLEEPDELAY);  //turn off CPU
-
-					digitalWrite(gpsChipPowerPin, LOW);  //turn on GPS
-				} //if (TURNOFFGPS) 
-
-			} //if (fix)
-
 			return;
 		}//if (gotGPRMC)
 

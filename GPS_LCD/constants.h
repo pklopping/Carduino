@@ -8,8 +8,6 @@
 #define chipSelect 10
 
 // power saving modes
-#define SLEEPDELAY 0    /* power-down time in seconds. Max 65535. Ignored if TURNOFFGPS == 0 */
-#define TURNOFFGPS 0    /* set to 1 to enable powerdown of arduino and GPS. Ignored if SLEEPDELAY == 0 */
 #define LOG_RMC_FIXONLY 0  /* set to 1 to only log to SD when GPD has a fix */
 
 // what to log

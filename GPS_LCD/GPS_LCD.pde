@@ -157,25 +157,25 @@ void updateLCD() {
       lcd.setCursor(0,0);
       lcd.print("Acquiring Speed");
     } else {
-      lcd.setCursor(4,0);
-      padLCDNumber(GPS::currSpeed, 2);
+      lcd.setCursor(5,0);
+      padLCDNumber(GPS::currSpeed, 2, ' ');
       lcd.print((int)GPS::currSpeed);
       lcd.print("mph");
 
       //Display Heading
       lcd.setCursor(13,0);
-      padLCDNumber(GPS::currHeading, 2);
+      padLCDNumber(GPS::currHeading, 2, '0');
       lcd.print(GPS::currHeading);
     }
   }
   // ----- LINE 2 -----
 
   //Display Time
-  lcd.setCursor(5,1);
+  lcd.setCursor(6,1);
   lcd.print(formattedTime(GPS::currTime));
   //Display Temp
   lcd.setCursor(13,1);
-  padLCDNumber(currTemp, 2);
+  padLCDNumber(currTemp, 2, ' ');
   lcd.print(round(currTemp));
 
   //Display Switch Status
@@ -199,12 +199,12 @@ void updateLCD() {
   so 2 leading zeros would yeild 00 if the number is less than 10
   it's a litlte confusing, I know. I should put more thought into this variable name
 */
-void padLCDNumber(float number, int8_t leading_zeros) {
+void padLCDNumber(float number, int8_t leading_zeros, char filler) {
   if (leading_zeros < 0)
     return;
   while (leading_zeros > 0) {
     if (number < pow(10, leading_zeros))
-      lcd.print("0");
+      lcd.print(filler);
     leading_zeros--;
   }
 }

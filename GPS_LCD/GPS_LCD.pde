@@ -5,6 +5,11 @@
 
 #include <math.h>
 #include <SD.h>
+
+//Debugging
+//http://playground.arduino.cc/Code/AvailableMemory
+#include "MemoryFree.h"
+
 #include "constants.h"
 #include "helpers.h"
 //Other Libraries
@@ -73,6 +78,9 @@ void setup() {
   timer.setInterval(1000,updateLCD);
   timer.setInterval(500,updateLights);
   timer.setInterval(5000,getTemperature);
+  if (DEBUG_MEMORY) {
+    timer.setInterval(500, printFreeMemory);
+  }
   //Temp Sensor Stuff
   sensors.begin();
 }

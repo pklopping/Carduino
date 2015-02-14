@@ -56,3 +56,12 @@ char* formattedTime(char *time) {
 	timeString.toCharArray(timeCharArray,6);
 	return timeCharArray;
 }
+
+/*
+  printMemoryUsage comes from the MemoryFree library: 
+*/
+void printFreeMemory() {
+  Serial.print("Mem: ");
+  Serial.println(freeMemory());
+}
+

@@ -7,7 +7,7 @@
 uint8_t GPS::bufferidx = 0;
 char GPS::buffer[BUFFSIZE];
 bool GPS::hasLock = false; // current fix state
-char *GPS::currTime = "00:00"; //current timestring from the GPS hhmmss.ddd
+char GPS::currTime[5]; //current timestring from the GPS hhmmss.ddd
 float GPS::currSpeed = 0.0; //current speed from GPS in knots
 float GPS::currHeading = 0.0; //current heading from GPS
 bool GPS::speedIsBlank = true;
@@ -70,7 +70,6 @@ void GPS::configureGpsSerial() {
 
 	gpsSerial.print(SERIAL_SET);
 	delay(250);
-
 	//Whoops, looks like I need to tell it to turn off this other junk
 	gpsSerial.print(DDM_OFF);
 	delay(250);
@@ -90,13 +89,20 @@ void GPS::configureGpsSerial() {
 	delay(250);
 }
 
+/*
+	setSpeed examines the current GPRMC sentence and pulls out the speed
+	The GPRMC sentence shows velocity in knots, but we want it in MPH, so we convert it.
+*/
 void GPS::setSpeed(char *gpsString) {
-  float knots = atof(parseGPSString(7,gpsString));
-  currSpeed = knots*1.15077;
+	//Grab the seventh position of the sentence, convert it to a float, and convert knots to mph
+	currSpeed = atof(parseGPSString(7,gpsString))*1.15077;
 }
 
+/*
+	setHeading examines the GPRMC sentence and pulls out the heading
+*/
 void GPS::setHeading(char *gpsString) {
-  currHeading = atof(parseGPSString(8,gpsString));
+	currHeading = atof(parseGPSString(8,gpsString));
 }
 
 void GPS::readGPS() {

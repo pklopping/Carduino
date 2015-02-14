@@ -11,7 +11,7 @@ class GPS {
 
 public:
 	static bool hasLock; // current fix state
-	static char *currTime; //current timestring from the GPS hhmmss.ddd
+	static char currTime[5]; //current timestring from the GPS hhmmss.ddd
 	static float currSpeed; //current speed from GPS in knots
 	static float currHeading; //current heading from GPS
 	static bool speedIsBlank;

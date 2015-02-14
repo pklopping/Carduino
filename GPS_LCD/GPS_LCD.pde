@@ -69,7 +69,7 @@ void setup() {
 
   //Setup timers
   timer.setInterval(1000,updateLCD);
-  timer.setInterval(5000,updateLights);
+  timer.setInterval(500,updateLights);
   timer.setInterval(5000,getTemperature);
   //Temp Sensor Stuff
   sensors.begin();

@@ -164,8 +164,8 @@ void GPS::readGPS() {
 			}
 		}
 
-		if (hasLock) {
-      checkForBlankSpeed(buffer);
+		if (gotGPRMC && hasLock) {
+			checkForBlankSpeed(buffer);
 			setSpeed(buffer);
 			setHeading(buffer);
 		}

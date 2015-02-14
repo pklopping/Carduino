@@ -25,6 +25,8 @@ DallasTemperature sensors(&oneWire);
 LiquidCrystal lcd(42, 41, 40, 35, 34, 33, 32);
 float currTemp;
 int8_t switchState; // 0 is off, -1 is down, 1 is up
+bool switch_up; //Declare it once and reuse it
+bool switch_down; //Declare it once and reuse it
 
 SimpleTimer timer;
 
@@ -46,7 +48,7 @@ void setup() {
   pinMode(BLACK_BUTTON, INPUT);
 
   int err = 0;
-  
+
   err = GPS::setupSD();
   if (err != 0) {
     error(err);
@@ -82,11 +84,11 @@ void loop() {
 
 void updateLights() {
   //Check for change in state
-  bool up = digitalRead(SWITCH_UP);
-  bool down = digitalRead(SWITCH_DOWN);
-  if (up)
+  switch_up = digitalRead(SWITCH_UP);
+  switch_down = digitalRead(SWITCH_DOWN);
+  if (switch_up)
     switchState = 1;
-  else if (down)
+  else if (switch_down)
     switchState = -1;
   else
     switchState = 0;
@@ -106,24 +108,30 @@ void updateLights() {
       break;
   }
 
-  //Update light colors if necessary
-  if (switchState == 1) {
-    setLightColors();
-  }
+  setLightColors();
 }
 
 void setLightColors() {
-  int tempTemp = currTemp;
-  tempTemp = max(currTemp, COLD);
-  tempTemp = min(tempTemp, HOT);
-  uint8_t currentColor = map(tempTemp, COLD, HOT, 0, 255);
-  analogWrite(RED_CHANNEL, currentColor);
-  analogWrite(BLUE_CHANNEL, 255-currentColor);
+  if (switchState == 1) {
+    int tempTemp = currTemp;
+    tempTemp = max(currTemp, COLD);
+    tempTemp = min(tempTemp, HOT);
+    uint8_t currentColor = map(tempTemp, COLD, HOT, 0, 255);
+    analogWrite(RED_CHANNEL, currentColor);
+    analogWrite(BLUE_CHANNEL, 255-currentColor);
+  } else if (switchState == 0) {
+    analogWrite(RED_CHANNEL, 0);
+    analogWrite(GREEN_CHANNEL, 0);
+    analogWrite(BLUE_CHANNEL, 0);
+  } else {
+    //Don't care, the pins are set as inputs. 
+  }
 }
 
 void getTemperature(){
-  if (DEBUG_TEMPS)
+  if (DEBUG_TEMPS) {
     Serial.print(" Requesting temperatures...");
+  }
   sensors.requestTemperatures(); // Send the command to get temperatures
   currTemp = sensors.getTempFByIndex(0);
   if (DEBUG_TEMPS) {
@@ -138,11 +146,6 @@ void getTemperature(){
   This function updates the data on the LCD
 */
 void updateLCD() {
-  //Show a welcome message on the LCD
-  // lcd.setCursor(0,0);
-  // lcd.print("----------------");
-  // lcd.setCursor(0,1);
-  // lcd.print("----------------");
   lcd.clear();
 
   // ----- LINE 1 -----

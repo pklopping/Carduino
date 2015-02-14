@@ -36,8 +36,10 @@ bool switch_down; //Declare it once and reuse it
 SimpleTimer timer;
 
 void setup() {
-  Serial.begin(115200); //9600 is so ordinary
-  Serial.println("\r\nGPSlogger");
+  if (DEBUG_MEMORY || DEBUG_TEMPS || DEBUG_GPS || DEBUG_LIGHTS) {
+    Serial.begin(115200); //9600 is so ordinary
+    Serial.println("\r\nGPSlogger");
+  }
 
   //INit the GPS class
   GPS::GPS();

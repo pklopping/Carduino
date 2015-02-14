@@ -152,7 +152,9 @@ void GPS::readGPS() {
 			// find out if we got a fix
 			char *p = buffer;
 			p = strchr(p, ',')+1; //Should have current time?
-			currTime = substr(p,0,6);
+			for (int i = 0; i < 6; i++) {
+				currTime[i] = p[i];
+			}
 			p = strchr(p, ',')+1;       // skip to 3rd item
 
 			if (p[0] == 'V') {

@@ -32,6 +32,7 @@ float currTemp;
 int8_t switchState; // 0 is off, -1 is down, 1 is up
 bool switch_up; //Declare it once and reuse it
 bool switch_down; //Declare it once and reuse it
+bool need_to_clear_lcd = true;
 
 SimpleTimer timer;
 
@@ -77,7 +78,7 @@ void setup() {
   lcd.print("Starting System");
 
   //Setup timers
-  timer.setInterval(1000,updateLCD);
+  timer.setInterval(500,updateLCD);
   timer.setInterval(500,updateLights);
   timer.setInterval(5000,getTemperature);
   if (DEBUG_MEMORY) {
@@ -156,7 +157,11 @@ void getTemperature(){
   This function updates the data on the LCD
 */
 void updateLCD() {
-  lcd.clear();
+  //Only clear the screen once.
+  if (need_to_clear_lcd) {
+    lcd.clear(); 
+    need_to_clear_lcd = false;
+  }
 
   // ----- LINE 1 -----
 
@@ -170,10 +175,20 @@ void updateLCD() {
       lcd.setCursor(0,0);
       lcd.print("Acquiring Speed");
     } else {
+      //Gotta clear the "Acquiring *" message.
+      // I should probably find a cleaner way to do this. 
+      lcd.setCursor(0,0);
+      lcd.print("     "); 
+
       lcd.setCursor(5,0);
       padLCDNumber(GPS::currSpeed, 2, ' ');
       lcd.print((int)GPS::currSpeed);
       lcd.print("mph");
+
+      //Another hack to clear previous messages. 
+      //I'm terrible. I know.
+      lcd.setCursor(11,0);
+      lcd.print("  "); 
 
       //Display Heading
       lcd.setCursor(13,0);

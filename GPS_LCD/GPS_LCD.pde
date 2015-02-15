@@ -168,7 +168,7 @@ void updateLCD() {
   // Display Fix or not
   if (!GPS::hasLock) {
     lcd.setCursor(0,0);
-    lcd.print(" Acquiring Lock");
+    lcd.print(" Acquiring Lock ");
   } else {
     //Display MPH
     if (GPS::speedIsBlank) {

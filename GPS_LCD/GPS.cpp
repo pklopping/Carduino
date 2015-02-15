@@ -40,7 +40,7 @@ int GPS::createLog() {
 	strcpy(buffer, "LOG000.TXT");
 	for (int8_t i = 0; i < 1000; i++) {
 		buffer[3] = '0' + (uint8_t)floor(i/100);
-		buffer[4] = '0' + (uint8_t)floor(i/100)%10;
+		buffer[4] = '0' + (uint8_t)floor(i/10)%10;
 		buffer[5] = '0' + i%10;
 		// create if does not exist, do not open existing, write, sync after write
 		if (! SD.exists(buffer)) {

@@ -125,8 +125,7 @@ void updateLights() {
 void setLightColors() {
   if (switchState == 1) {
     int tempTemp = currTemp;
-    tempTemp = max(currTemp, COLD);
-    tempTemp = min(tempTemp, HOT);
+    tempTemp = constrain(currTemp, COLD, HOT);
     uint8_t currentColor = map(tempTemp, COLD, HOT, 0, 255);
     analogWrite(RED_CHANNEL, currentColor);
     analogWrite(BLUE_CHANNEL, 255-currentColor);

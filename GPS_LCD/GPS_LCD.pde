@@ -231,7 +231,7 @@ void padLCDNumber(float number, int8_t leading_zeros, char filler) {
   if (leading_zeros < 0)
     return;
   while (leading_zeros > 0) {
-    if (number < pow(10, average(leading_zeros)))
+    if ((int)number < pow(10, leading_zeros))
       lcd.print(filler);
     leading_zeros--;
   }

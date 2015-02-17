@@ -44,7 +44,7 @@
 #define BLUE_CHANNEL 46
 
 //Temperature
-#define HOT 100
+#define HOT 90
 #define COLD 50
 
 #define DEBUG_LIGHTS false

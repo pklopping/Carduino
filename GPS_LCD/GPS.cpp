@@ -41,7 +41,15 @@ int GPS::createLog() {
 	for (int8_t i = 0; i < 1000; i++) {
 		// create if does not exist, do not open existing, write, sync after write
 		sprintf(buffer, "LOG%03d.TXT", i);
+		if (DEBUG_SD){
+			Serial.print("Trying: ");
+			Serial.println(buffer);
+		}
 		if (! SD.exists(buffer)) {
+			if (DEBUG_SD){
+				Serial.println("Using ");
+				Serial.println(buffer);
+			}
 			break;
 		}
 	}
@@ -64,9 +72,6 @@ void GPS::configureGpsSerial() {
 	// connect to the GPS at the desired rate
 	gpsSerial.begin(GPSRATE);
 
-	if (DEBUG_GPS)
-		Serial.println("GPS Ready!");
-
 	gpsSerial.print(SERIAL_SET);
 	delay(250);
 	//Whoops, looks like I need to tell it to turn off this other junk
@@ -80,12 +85,15 @@ void GPS::configureGpsSerial() {
 	delay(250);
 	gpsSerial.print(GSV_OFF);
 	delay(250);
+	gpsSerial.print(RMC_ON);
+	delay(250);
 	gpsSerial.print(VTG_OFF);
 	delay(250);
 	gpsSerial.print(WAAS_OFF);
 	delay(250);
-	gpsSerial.print(RMC_ON);
-	delay(250);
+
+	if (DEBUG_GPS)
+		Serial.println("GPS Ready!");
 }
 
 /*

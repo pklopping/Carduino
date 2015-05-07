@@ -50,6 +50,7 @@
 #define DEBUG_LIGHTS false
 #define DEBUG_TEMPS false
 #define DEBUG_GPS false
+#define DEBUG_SD false
 #define DEBUG_MEMORY false
 
 #endif

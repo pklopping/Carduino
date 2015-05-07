@@ -27,7 +27,7 @@
 #define GPS_RX_PIN 51
 
 // Set the timezone
-#define TIMEZONE -6
+#define TIMEZONE -5
 
 //Temp Sensor Bus
 #define ONE_WIRE_BUS 24
